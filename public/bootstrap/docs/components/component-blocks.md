@@ -6,7 +6,7 @@ Blocks are a brand new composing metaphor exclusively for use with our Marketing
 <div class="block text-center">
   <h1 class="block-title">A basic block</h1>
   <h4 class="text-muted">Use these to package stackable, image driven content.</h4>
-  <button class="btn btn-primary m-t">With a simple button</button>
+  <button class="btn btn-primary mt-1">With a simple button</button>
 </div>
 {% endexample %}
 
@@ -16,7 +16,7 @@ We have several basic block types, including an inverse block.
 <div class="block block-inverse text-center">
   <h1 class="block-title">An inverse block</h1>
   <h4 class="text-muted">Use the inverse modifier for working over dark images.</h4>
-  <button class="btn btn-primary m-t">With a simple button</button>
+  <button class="btn btn-primary mt-1">With a simple button</button>
 </div>
 {% endexample %}
 
@@ -27,7 +27,7 @@ We've also made it easy to integrate embeded content for more interactive block 
   <div class="block-foreground">
     <h1 class="block-title">An embed block</h1>
     <h4 class="text-muted">Use block-background to integrate interactive backgrounds.</h4>
-    <button class="btn btn-default btn-outline m-t">With a simple button</button>
+    <button class="btn btn-outline-secondary mt-1">With a simple button</button>
   </div>
   <div class="block-background">
     <iframe frameBorder="0" src="https://a.tiles.mapbox.com/v4/jacobthornton.6681fb42/attribution.html?access_token=pk.eyJ1IjoiamFjb2J0aG9ybnRvbiIsImEiOiJlMGRmZmJlNDZkNDhlN2EzMTQ0YWFiNjhlN2RiZWY1ZCJ9.hO-UNIIplnebJYkya-8TEQ"></iframe>
@@ -40,13 +40,13 @@ Use different modifiers like `block-bordered` and `block-angle` to experiment wi
 {% example html %}
 <div class="block text-center">
   <div class="container-fluid">
-    <h4 class="m-b-md">
+    <h4 class="mb-4">
       Join over 900,000 designers already using Bootstrap. Get Bootstrap <strong>free</strong> forever!
     </h4>
-    <form class="form-inline">
-      <input class="form-control m-b" placeholder="email address">
-      <input class="form-control m-b" type="password" placeholder="Create a Password">
-      <button class="btn btn-primary m-b">Get started - free forever</button>
+    <form class="form-inline d-flex justify-content-center">
+      <input class="form-control mb-3" placeholder="email address">
+      <input class="form-control mb-3 mx-1" type="password" placeholder="Create a Password">
+      <button class="btn btn-primary mb-3">Get started - free forever</button>
     </form>
     <small class="text-muted">
       By clicking "get started – free Forever!" I agree to Bootstraps

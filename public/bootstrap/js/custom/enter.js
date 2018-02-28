@@ -1,107 +1,163 @@
-+function ($) {
-  'use strict';
+import $ from 'jquery'
+import Util from './util'
 
-  // ENTER CLASS DEFINITION
-  // ======================
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v4.0.0): enter.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * --------------------------------------------------------------------------
+ */
 
-  var dataApi = '[data-transition="entrance"]'
-  var Enter = function (element, options) {
-    if (!$.support.transition) return
+const Enter = (($) => {
 
-    this.element = element
-    this.options = options
-    this.handler = null
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
 
-    this.addEventListeners()
+  const NAME                = 'enter'
+  const DATA_KEY            = 'bs.enter'
+  const VERSION             = 'v4.0.0'
+  const DATA_API            = '[data-transition="entrance"]'
+  const EVENT_KEY           = `.${DATA_KEY}`
+  const DATA_API_KEY        = '.data-api'
+  const JQUERY_NO_CONFLICT  = $.fn[NAME]
+
+  const Event = {
+    SCROLL : `scroll${EVENT_KEY}`,
+    ENTER  : `enter${EVENT_KEY}`
   }
 
-  Enter.VERSION = '3.3.5'
-
-  Enter.DEFAULTS = {
+  const Default = {
     easing: 'cubic-bezier(.2,.7,.5,1)',
     duration: 1200,
     delay: 0
   }
 
-  Enter.prototype.addEventListeners = function () {
-    var boundScrollHandler = $.proxy(this.checkForEnter, this)
 
-    this.listener = $(window).on('scroll.enter', (this.handler = function () {
-      window.requestAnimationFrame(boundScrollHandler)
-    }))
+  /**
+   * ------------------------------------------------------------------------
+   * Class Definition
+   * ------------------------------------------------------------------------
+   */
 
-    this.checkForEnter()
-  }
+  class Enter {
 
-  Enter.prototype.removeEventListeners = function () {
-    $(window).off('scroll.enter', this.handler)
-  }
+    constructor(element, config) {
+      if (!Util.supportsTransitionEnd()) return
 
-  Enter.prototype.checkForEnter = function () {
-    var windowHeight  = window.innerHeight
-    var rect          = this.element.getBoundingClientRect()
+      this._element  = element
+      this._config   = config
+      this._handler  = null
+      this._listener = null
 
-    if ((windowHeight - rect.top) >= 0) {
-      setTimeout($.proxy(this.triggerEntrance, this), this.options.delay)
+      this._addEventListeners()
+    }
+
+    // getters
+
+    static get VERSION() {
+      return VERSION
+    }
+
+    static get Default() {
+      return Default
+    }
+
+    // public
+
+    dispose() {
+      $(this._element).off(EVENT_KEY)
+      $.removeData(this._element, DATA_KEY)
+
+      this._element  = null
+      this._config   = null
+      this._handler  = null
+      this._listener = null
+    }
+
+    // private
+
+    _addEventListeners() {
+      const boundScrollHandler = $.proxy(this._checkForEnter, this)
+      this._handler = function () { window.requestAnimationFrame(boundScrollHandler) }
+      this._listener = $(window).on(Event.SCROLL, this._handler)
+      this._checkForEnter()
+    }
+
+    _removeEventListeners() {
+      $(window).off(Event.SCROLL, this._handler)
+    }
+
+    _checkForEnter() {
+      const windowHeight  = window.innerHeight
+      const rect          = this._element.getBoundingClientRect()
+
+      if ((windowHeight - rect.top) >= 0) {
+        setTimeout($.proxy(this._triggerEntrance, this), this._config.delay)
+      }
+    }
+
+    _triggerEntrance() {
+      this._removeEventListeners()
+
+      $(this._element)
+        .css({'-webkit-transition': '-webkit-transform ' + this._config.duration + 'ms ' + this._config.easing,
+                  '-ms-transition': '-ms-transform ' + this._config.duration + 'ms ' + this._config.easing,
+                      'transition': 'transform ' + this._config.duration + 'ms ' + this._config.easing
+        })
+        .css({'-webkit-transform': 'none',
+                  '-ms-transform': 'none',
+                      'transform': 'none'
+         })
+        .trigger(Event.ENTER)
+    }
+
+    // static
+
+    static _jQueryInterface(config) {
+      return this.each(function () {
+        var $this   = $(this)
+        var data    = $this.data(DATA_KEY)
+        var _config = $.extend(
+          {},
+          Default,
+          $this.data(),
+          typeof config == 'object' && config
+        )
+
+        if (!data) $this.data(DATA_KEY, (data = new Enter(this, _config)))
+        if (typeof config == 'string') data[config]()
+      })
     }
   }
 
-  Enter.prototype.triggerEntrance = function () {
-    this.removeEventListeners()
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   */
 
-    $(this.element)
-      .css({'-webkit-transition': '-webkit-transform ' + this.options.duration + 'ms ' + this.options.easing,
-                '-ms-transition': '-ms-transform ' + this.options.duration + 'ms ' + this.options.easing,
-                    'transition': 'transform ' + this.options.duration + 'ms ' + this.options.easing
-      })
-      .css({'-webkit-transform': 'none',
-                '-ms-transform': 'none',
-                    'transform': 'none'
-       })
-      .trigger('enter.bs.enter')
+  $.fn[NAME]             = Enter._jQueryInterface
+  $.fn[NAME].Constructor = Enter
+  $.fn[NAME].noConflict  = function () {
+    $.fn[NAME] = JQUERY_NO_CONFLICT
+    return Enter._jQueryInterface
   }
 
-
-
-  // ENTER PLUGIN DEFINITION
-  // =======================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.enter')
-      var options = $.extend(
-        {},
-        Enter.DEFAULTS,
-        $this.data(),
-        typeof option == 'object' && option
-      )
-
-      if (!data) $this.data('bs.enter', (data = new Enter(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.enter
-
-  $.fn.enter             = Plugin
-  $.fn.enter.Constructor = Enter
-
-
-  // ENTER NO CONFLICT
-  // =================
-
-  $.fn.enter.noConflict = function () {
-    $.fn.enter = old
-    return this
-  }
-
-
-  // ENTER DATA-API
-  // ==============
+  /**
+   * ------------------------------------------------------------------------
+   * Data Api implementation
+   * ------------------------------------------------------------------------
+   */
 
   $(function () {
-    $(dataApi).enter()
+   $(DATA_API).enter()
   })
 
-}(jQuery);
+  return Enter
+
+})(jQuery)
+
+export default Enter

@@ -7,8 +7,8 @@ Support for multiple, stackable modal bodies and scrolling bodies using the new 
   <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Medium Modal</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body modal-body-scroller">
         <p>Maecenas faucibus mollis interdum. Nulla vitae elit libero, a pharetra augue. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Maecenas faucibus mollis interdum. Donec ullamcorper nulla non metus auctor fringilla. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
@@ -43,17 +43,17 @@ Also, drop the regular footer for a new two-up set of actions using the `.modal-
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Small modal</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
         <p>Modal body text...</p>
       </div>
       <div class="modal-actions">
-        <button type="button" class="btn-link modal-action" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn-link modal-action" data-dismiss="modal">
           <strong>Continue</strong>
         </button>
+        <button type="button" class="btn-link modal-action" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>

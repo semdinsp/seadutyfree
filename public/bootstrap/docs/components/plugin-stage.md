@@ -16,7 +16,7 @@ Add `data-toggle="stage"` and a `data-target` to any clickable element that you 
 
 Stage shelves—the hidden content areas—can house just about any content, but you'll likely have to tweak some styles depending on what you place within them.
 
-Be sure to match any `data-position` values with the CSS-based `width` on the `.stage-shelf`.
+Be sure to match any `data-distance` values with the CSS-based `width` on the `.stage-shelf`.
 
 ### Example
 
@@ -24,7 +24,7 @@ For an interactive demo, refer to the `Menu` button at the top of this page. **T
 
 {% highlight html %}
 <div class="stage">
-  <button class="btn btn-link stage-toggle" data-target="#stage" data-toggle="stage">
+  <button class="btn btn-link stage-toggle" data-target=".stage" data-toggle="stage">
     <span class="icon icon-menu"></span>
     Menu
   </button>
@@ -37,11 +37,11 @@ For an interactive demo, refer to the `Menu` button at the top of this page. **T
 </div>
 {% endhighlight %}
 
-For a right-aligned stage shelf and button, the **minmal required markup looks like this:**
+For a right-aligned stage shelf and button, the **minimal required markup looks like this:**
 
 {% highlight html %}
 <div class="stage">
-  <button class="btn btn-link stage-toggle stage-toggle-right" data-target="#stage" data-toggle="stage" data-position="-250">
+  <button class="btn btn-link stage-toggle stage-toggle-right" data-target=".stage" data-toggle="stage" data-distance="-250">
     <span class="icon icon-menu"></span>
     Menu
   </button>

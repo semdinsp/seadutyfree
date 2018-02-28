@@ -27,7 +27,7 @@ Including in this theme is [Tablesorter](http://tablesorter.com/), a jQuery plug
         <tr>
           <td><input type="checkbox" class="select-row"></td>
           <td><a href="#">#10002</a></td>
-          <td>Firstname Lastname</td>
+          <td>Firstname Last</td>
           <td>Admin theme</td>
           <td>01/01/2015</td>
           <td>$100.00</td>

@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,47 +18,56 @@
     </title>
 
     
-      <link href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,700" rel="stylesheet">
-      <link href="/assets/css/toolkit-minimal.css" rel="stylesheet">
-      <link href="/assets/css/application-minimal.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700" rel="stylesheet">
+      <link href="../assets/css/toolkit-minimal.css" rel="stylesheet">
+      <link href="../assets/css/application-minimal.css" rel="stylesheet">
     
 
     
-      <link href="/assets/css/docs.css" rel="stylesheet">
+      <link href="../assets/css/docs.css" rel="stylesheet">
     
 
-
-    
-      <style>
-        /* note: this is a hack for ios iframe for bootstrap themes shopify page */
-        /* this chunk of css is not part of the toolkit :) */
+    <style>
+      /* note: this is a hack for ios iframe for bootstrap themes shopify page */
+      /* this chunk of css is not part of the toolkit :) */
+      /* …curses ios, etc… */
+      @media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
         body {
           width: 1px;
           min-width: 100%;
           *width: 100%;
         }
-      </style>
-    
+        #stage {
+          height: 1px;
+          overflow: auto;
+          min-height: 100vh;
+          -webkit-overflow-scrolling: touch;
+        }
+      }
+    </style>
   </head>
 
 
 <body>
   <div class="stage-shelf hidden" id="sidebar">
-  <ul class="nav nav-bordered nav-stacked">
+  <ul class="nav nav-bordered nav-stacked flex-column">
     <li class="nav-header">Examples</li>
-    <li>
-      <a href="/">Minimal</a>
+    <li class="nav-item">
+      <a class="nav-link" href="../index.html">Startup</a>
     </li>
-    <li>
-      <a href="/bold">Bold</a>
+    <li class="nav-item">
+      <a class="nav-link" href="../minimal/index.html">Minimal</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="../bold/index.html">Bold</a>
     </li>
     <li class="nav-divider"></li>
     <li class="nav-header">Docs</li>
-    <li class="active">
-      <a href="/docs">Toolkit</a>
+    <li class="nav-item">
+      <a class="nav-link active" href="../docs/index.html">Toolkit</a>
     </li>
-    <li>
-      <a href="http://getbootstrap.com">Bootstrap</a>
+    <li class="nav-item">
+      <a class="nav-link" href="http://getbootstrap.com">Bootstrap</a>
     </li>
   </ul>
 </div>
@@ -274,13 +286,13 @@
   </ol>
   <div class="carousel-inner" role="listbox">
     <div class="item active">
-      <img src="http://placehold.it/1140x500/777/555" alt="First slide" />
+      <img src="https://placehold.it/1140x500/777/555" alt="First slide" />
     </div>
     <div class="item">
-      <img src="http://placehold.it/1140x500/666/444" alt="Second slide" />
+      <img src="https://placehold.it/1140x500/666/444" alt="Second slide" />
     </div>
     <div class="item">
-      <img src="http://placehold.it/1140x500/555/333" alt="Third slide" />
+      <img src="https://placehold.it/1140x500/555/333" alt="Third slide" />
     </div>
   </div>
   <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
@@ -1023,9 +1035,14 @@
 
   </div>
 
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/toolkit.js"></script>
-    <script src="/assets/js/application.js"></script>
-  </body>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/popper.min.js"></script>
+    <script src="../assets/js/toolkit.js"></script>
+    <script src="../assets/js/application.js"></script>
+    <script>
+      // execute/clear BS loaders for docs
+      $(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
+    </script>
+</body>
 </html>
 

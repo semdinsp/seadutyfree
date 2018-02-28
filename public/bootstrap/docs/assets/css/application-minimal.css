@@ -18,6 +18,14 @@
   font-size: 13px;
 }
 
+.app-navbar .nav-item + .nav-item {
+  margin-left: 15px;
+}
+
+.app-navbar .collapsing .nav-item + .nav-item,
+.app-navbar .collapse.show .nav-item + .nav-item {
+  margin-left: 0;
+}
 
 /* intro block */
 .app-block-intro {
@@ -47,6 +55,9 @@
 /* design block */
 .app-block-design > .container > .row {
   z-index: 2;
+}
+.app-pos-r {
+  position: relative;
 }
 
 .app-block-design-img {
@@ -95,14 +106,3 @@
 
 
 /* brand */
-
-@media (max-width: 400px) {
-  .app-myphone-brand {
-    font-size: 46px !important;
-  }
-}
-@media (max-width: 350px) {
-  .app-myphone-brand {
-    font-size: 42px !important;
-  }
-}

@@ -1,172 +1,218 @@
-+function ($) {
-  'use strict';
+import $ from 'jquery'
+import Util from './util'
 
-  // ENTER CLASS DEFINITION
-  // ======================
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v4.0.0): ImageGrid.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * --------------------------------------------------------------------------
+ */
 
-  var dataApi = '[data-grid="images"]'
+const ImageGrid = (($) => {
 
-  var ImageGrid = function (element, options) {
-    this.cleanWhitespace(element)
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
 
-    this.row        = 0
-    this.rownum     = 1
-    this.elements   = []
-    this.element    = element
-    this.albumWidth = $(element).width()
-    this.images     = $(element).children()
-    this.options    = $.extend({}, ImageGrid.DEFAULTS, options)
+  const NAME                = 'imageGrid'
+  const DATA_KEY            = `bs.image-grid`
+  const VERSION             = 'v4.0.0'
+  const DATA_API            = '[data-grid="images"]'
+  const EVENT_KEY           = `.${DATA_KEY}`
+  const DATA_API_KEY        = '.data-api'
+  const JQUERY_NO_CONFLICT  = $.fn[NAME]
 
-    $(window).on('resize', $.proxy(this.handleResize, this))
-
-    this.processImages()
-  }
-
-  ImageGrid.VERSION  = '3.3.1'
-
-  ImageGrid.TRANSITION_DURATION = 350
-
-  ImageGrid.DEFAULTS = {
+  const Default = {
     padding      : 10,
     targetHeight : 300,
     display      : 'inline-block'
   }
 
-  ImageGrid.prototype.handleResize = function () {
-    this.row = 0
-    this.rownum     = 1
-    this.elements   = []
-    this.albumWidth = $(this.element).width()
-    this.images     = $(this.element).children()
-    this.processImages()
+  const Event = {
+    RESIZE : `resize${EVENT_KEY}`
   }
 
-  ImageGrid.prototype.processImages = function () {
-    var that = this
-    this.images.each(function (index) {
-      var $this = $(this)
-      var $img  = $this.is('img') ? $this : $this.find('img')
+  /**
+   * ------------------------------------------------------------------------
+   * Class Definition
+   * ------------------------------------------------------------------------
+   */
 
-      var w = typeof $img.data('width') != 'undefined' ?
-        $img.data('width') : $img.width()
+  class ImageGrid {
 
-      var h = typeof $img.data('height') != 'undefined' ?
-        $img.data('height') : $img.height()
+    constructor(element, config) {
+      this._cleanWhitespace(element)
 
-      $img.data('width',  w)
-      $img.data('height', h)
+      this._row        = 0
+      this._rownum     = 1
+      this._elements   = []
+      this._element    = element
+      this._albumWidth = $(element).width()
+      this._images     = $(element).children()
+      this._config     = $.extend({}, Default, config)
 
-      var idealW = Math.ceil(w / h * that.options.targetHeight)
-      var idealH = Math.ceil(that.options.targetHeight)
+      $(window).on(Event.RESIZE, $.proxy(this._handleResize, this))
 
-      that.elements.push([this, idealW, idealH])
-
-      that.row += idealW + that.options.padding
-
-      if (that.row > that.albumWidth && that.elements.length) {
-        that.resizeRow(that.row - that.options.padding)
-
-        that.row      = 0
-        that.elements = []
-        that.rownum  += 1
-      }
-
-      if (that.images.length - 1 == index && that.elements.length) {
-        that.resizeRow(that.row)
-
-        that.row      = 0
-        that.elements = []
-        that.rownum  += 1
-      }
-    })
-  }
-
-  ImageGrid.prototype.resizeRow = function (row) {
-    var that               = this
-    var imageExtras        = (this.options.padding * (this.elements.length - 1))
-    var albumWidthAdjusted = this.albumWidth - imageExtras
-    var overPercent        = albumWidthAdjusted / (row - imageExtras)
-    var trackWidth         = imageExtras
-    var lastRow            = row < this.albumWidth
-
-    for (var i = 0; i < this.elements.length; i++) {
-      var $obj      = $(this.elements[i][0])
-      var fw        = Math.floor(this.elements[i][1] * overPercent)
-      var fh        = Math.floor(this.elements[i][2] * overPercent)
-      var isNotLast = i < (this.elements.length - 1)
-
-      trackWidth += fw
-
-      if (!isNotLast && trackWidth < this.albumWidth) {
-        fw += (this.albumWidth - trackWidth)
-      }
-
-      fw--
-
-      var $img = $obj.is('img') ? $obj : $obj.find('img')
-
-      $img.width(fw)
-      $img.height(fh)
-
-      this.applyModifications($obj, isNotLast)
+      this._processImages()
     }
-  }
 
-  ImageGrid.prototype.applyModifications = function ($obj, isNotLast) {
-    var css = {
-      'margin-bottom'  : this.options.padding + 'px',
-      'margin-right'   : (isNotLast) ? this.options.padding + 'px' : 0,
-      'display'        : this.options.display,
-      'vertical-align' : 'bottom'
-      // 'overflow'       : 'hidden'
+    // public
+
+    dispose() {
+      $(window).off(EVENT_KEY)
+      $.removeData(this._element, DATA_KEY)
+
+      this._row        = null
+      this._rownum     =null
+      this._elements   = null
+      this._element    = null
+      this._albumWidth = null
+      this._images     = null
+      this._config     = null
     }
-    $obj.css(css)
-  }
 
-  ImageGrid.prototype.cleanWhitespace = function (element) {
-    var textNodes = $(element)
-      .contents()
-      .filter(function() {
-        return (this.nodeType == 3 && !/\S/.test(this.nodeValue))
+    // private
+
+    _handleResize() {
+      this._row = 0
+      this._rownum     = 1
+      this._elements   = []
+      this._albumWidth = $(this._element).width()
+      this._images     = $(this._element).children()
+      this._processImages()
+    }
+
+    _processImages() {
+      var that = this
+      this._images.each(function (index) {
+        var $this = $(this)
+        var $img  = $this.is('img') ? $this : $this.find('img')
+
+        var w = typeof $img.data('width') !== 'undefined' ?
+          $img.data('width') : $img.width()
+
+        var h = typeof $img.data('height') !== 'undefined' ?
+          $img.data('height') : $img.height()
+
+        $img.data('width',  w)
+        $img.data('height', h)
+
+        var idealW = Math.ceil(w / h * that._config.targetHeight)
+        var idealH = Math.ceil(that._config.targetHeight)
+
+        that._elements.push([this, idealW, idealH])
+
+        that._row += idealW + that._config.padding
+
+        if (that._row > that._albumWidth && that._elements.length) {
+          that._resizeRow(that._row - that._config.padding)
+
+          that._row      = 0
+          that._elements = []
+          that._rownum  += 1
+        }
+
+        if (that._images.length - 1 == index && that._elements.length) {
+          that._resizeRow(that._row)
+
+          that._row      = 0
+          that._elements = []
+          that._rownum  += 1
+        }
       })
-      .remove()
+    }
+
+    _resizeRow(row) {
+      var imageExtras        = (this._config.padding * (this._elements.length - 1))
+      var albumWidthAdjusted = this._albumWidth - imageExtras
+      var overPercent        = albumWidthAdjusted / (row - imageExtras)
+      var trackWidth         = imageExtras
+      var lastRow            = row < this._albumWidth
+
+      for (var i = 0; i < this._elements.length; i++) {
+        var $obj      = $(this._elements[i][0])
+        var fw        = Math.floor(this._elements[i][1] * overPercent)
+        var fh        = Math.floor(this._elements[i][2] * overPercent)
+        var isNotLast = i < (this._elements.length - 1)
+
+        trackWidth += fw
+
+        if (!isNotLast && trackWidth < this._albumWidth) {
+          fw += (this._albumWidth - trackWidth)
+        }
+
+        fw--
+
+        var $img = $obj.is('img') ? $obj : $obj.find('img')
+
+        $img.width(fw)
+        $img.height(fh)
+
+        this._applyModifications($obj, isNotLast)
+      }
+    }
+
+    _applyModifications($obj, isNotLast) {
+      var css = {
+        'margin-bottom'  : this._config.padding + 'px',
+        'margin-right'   : (isNotLast) ? this._config.padding + 'px' : 0,
+        'display'        : this._config.display,
+        'vertical-align' : 'bottom'
+      }
+      $obj.css(css)
+    }
+
+    _cleanWhitespace(element) {
+      var textNodes = $(element)
+        .contents()
+        .filter(function() {
+          return (this.nodeType == 3 && !/\S/.test(this.nodeValue))
+        })
+        .remove()
+    }
+
+    // static
+
+    static _jQueryInterface(config) {
+      return this.each(function () {
+        var $this   = $(this)
+        var data    = $this.data(DATA_KEY)
+        var config = $.extend({}, Default, $this.data(), typeof config === 'object' && config)
+
+        if (!data) $this.data(DATA_KEY, (data = new ImageGrid(this, config)))
+        if (typeof config === 'string') data[config].call($this)
+      })
+    }
   }
 
-  // IMAGE GRID PLUGIN DEFINITION
-  // ============================
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   */
 
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.image-grid')
-      var options = $.extend({}, ImageGrid.DEFAULTS, $this.data(), typeof option == 'object' && option)
-
-      if (!data) $this.data('bs.image-grid', (data = new ImageGrid(this, options)))
-      if (typeof option == 'string') data[option].call($this)
-    })
-  }
-
-  var old = $.fn.imageGrid
-
-  $.fn.imageGrid             = Plugin
-  $.fn.imageGrid.Constructor = ImageGrid
-
-
-  // IMAGE GRID NO CONFLICT
-  // ======================
-
-  $.fn.imageGrid.noConflict = function () {
-    $.fn.imageGrid = old
-    return this
+  $.fn[NAME]             = ImageGrid._jQueryInterface
+  $.fn[NAME].Constructor = ImageGrid
+  $.fn[NAME].noConflict  = function () {
+    $.fn[NAME] = JQUERY_NO_CONFLICT
+    return Enter._jQueryInterface
   }
 
 
-  // IMAGE GRID DATA-API
-  // ===================
+  /**
+   * ------------------------------------------------------------------------
+   * Data Api implementation
+   * ------------------------------------------------------------------------
+   */
 
   $(function () {
-    $('[data-grid="images"]').imageGrid()
+    $(DATA_API).imageGrid()
   })
 
+  return ImageGrid
 
-}(jQuery);
+})(jQuery)
+
+export default ImageGrid

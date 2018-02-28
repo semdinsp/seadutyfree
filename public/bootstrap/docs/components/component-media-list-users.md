@@ -3,12 +3,10 @@
 {% example html %}
 <ul class="media-list media-list-users list-group">
   <li class="list-group-item">
-    <div class="media">
-      <a class="media-left" href="#">
-        <img class="media-object img-circle" src="{{ site.baseurl }}/assets/img/avatar-fat.jpg">
-      </a>
-      <div class="media-body">
-        <button class="btn btn-primary-outline btn-sm pull-right">
+    <div class="media w-100">
+      <img class="media-object rounded-circle mr-3" src="{{ relative }}assets/img/avatar-fat.jpg">
+      <div class="media-body align-self-center">
+        <button class="btn btn-outline-primary btn-sm float-right">
           <span class="icon icon-add-user"></span> Follow
         </button>
         <strong>Jacob Thornton</strong>
@@ -17,12 +15,10 @@
     </div>
   </li>
   <li class="list-group-item">
-    <div class="media">
-      <a class="media-left" href="#">
-        <img class="media-object img-circle" src="{{ site.baseurl }}/assets/img/avatar-dhg.png">
-      </a>
-      <div class="media-body">
-        <button class="btn btn-primary-outline btn-sm pull-right">
+    <div class="media w-100">
+      <img class="media-object rounded-circle mr-3" src="{{ relative }}assets/img/avatar-dhg.png">
+      <div class="media-body align-self-center">
+        <button class="btn btn-outline-primary btn-sm float-right">
           <span class="icon icon-add-user"></span> Follow
         </button>
         <strong>Dave Gamache</strong>
@@ -31,12 +27,10 @@
     </div>
   </li>
   <li class="list-group-item">
-    <div class="media">
-      <a class="media-left" href="#">
-        <img class="media-object img-circle" src="{{ site.baseurl }}/assets/img/avatar-mdo.png">
-      </a>
-      <div class="media-body">
-        <button class="btn btn-primary-outline btn-sm pull-right">
+    <div class="media w-100">
+      <img class="media-object rounded-circle mr-3" src="{{ relative }}assets/img/avatar-mdo.png">
+      <div class="media-body align-self-center">
+        <button class="btn btn-outline-primary btn-sm float-right">
           <span class="icon icon-add-user"></span> Follow
         </button>
         <strong>Mark Otto</strong>

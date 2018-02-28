@@ -9,10 +9,10 @@ Use the flex table classes when you need to keep related elements on the same ro
   </div>
   <div class="flextable-item">
     <div class="btn-group">
-      <button type="button" class="btn btn-primary-outline">
+      <button type="button" class="btn btn-outline-primary">
         <span class="icon icon-pencil"></span>
       </button>
-      <button type="button" class="btn btn-primary-outline">
+      <button type="button" class="btn btn-outline-primary">
         <span class="icon icon-erase"></span>
       </button>
     </div>

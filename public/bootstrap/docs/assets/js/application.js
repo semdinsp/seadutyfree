@@ -14,10 +14,12 @@ $(function () {
   }
 
   // doc nav js
-  var $toc    = $('#markdown-toc')
+  var $toc = $('#markdown-toc')
   var $window = $(window)
 
   if ($toc[0]) {
+    $('#markdown-toc li').addClass('nav-item')
+    $('#markdown-toc li > a').addClass('nav-link')
 
     maybeActivateDocNavigation()
     $window.on('resize', maybeActivateDocNavigation)
@@ -55,7 +57,7 @@ $(function () {
         var distance =  Math.max(scrollTop - cache.containerTop, 0)
 
         if (!distance) {
-          $($toc.find('li')[1]).addClass('active')
+          $($toc.find('li a')[1]).addClass('active')
           return $toc.css({
             position: '',
             left: '',
@@ -78,7 +80,7 @@ $(function () {
 
       $('body').scrollspy({
         target: '#markdown-toc',
-        selector: '#markdown-toc li > a'
+        children: 'li > a'
       })
 
       setTimeout(function () {

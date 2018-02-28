@@ -9,7 +9,7 @@ Use callouts to quickly draw attention to specific actions with an extended expl
   </div>
 
   <div class="callout-secondary">
-    <button class="btn btn-sm btn-info">Get started</button>
+    <button class="btn btn-primary">Get started</button>
   </div>
 </div>
 {% endexample %}

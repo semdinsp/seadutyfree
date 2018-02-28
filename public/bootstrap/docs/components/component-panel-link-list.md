@@ -1,11 +1,11 @@
-## Panel link list
+## Card link list
 
-Simple panel modifier for link lists.
+Simple card modifier for link lists.
 
 {% example html %}
-<div class="panel panel-default panel-link-list">
-  <div class="panel-body">
-    © 2015 Bootstrap
+<div class="card card-link-list">
+  <div class="card-block">
+    © 2018 Bootstrap
 
     <a href="#">About</a>
     <a href="#">Help</a>
@@ -13,8 +13,7 @@ Simple panel modifier for link lists.
     <a href="#">Privacy</a>
     <a href="#">Cookies</a>
     <a href="#">Ads </a>
-
-    <a href="#">info</a>
+    <a href="#">Info</a>
     <a href="#">Brand</a>
     <a href="#">Blog</a>
     <a href="#">Status</a>

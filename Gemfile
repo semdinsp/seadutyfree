@@ -5,7 +5,7 @@ gem 'estorm_lotto_tools'
 end
 
 # update to rvm gem 'rack', '1.4.5'
-ruby "2.1.5"
+ruby "2.4.0"
 gem 'foreman'
 gem 'sinatra'
 gem 'puma'

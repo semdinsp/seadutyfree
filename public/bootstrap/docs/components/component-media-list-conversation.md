@@ -2,7 +2,7 @@
 
 {% example html %}
 <ul class="media-list media-list-conversation c-w-md">
-  <li class="media media-current-user m-b-md">
+  <li class="media media-current-user mb-4">
     <div class="media-body">
       <div class="media-body-text">
         Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nulla vitae elit libero, a pharetra augue. Maecenas sed diam eget risus varius blandit sit amet non magna. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis.
@@ -13,14 +13,10 @@
         </small>
       </div>
     </div>
-    <a class="media-right" href="#">
-      <img class="img-circle media-object" src="{{ site.baseurl }}/assets/img/avatar-dhg.png">
-    </a>
+    <img class="rounded-circle media-object ml-3" src="{{ relative }}assets/img/avatar-dhg.png">
   </li>
-  <li class="media m-b-md">
-    <a class="media-left" href="#">
-      <img class="img-circle media-object" src="{{ site.baseurl }}/assets/img/avatar-fat.jpg">
-    </a>
+  <li class="media mb-4">
+    <img class="rounded-circle media-object mr-3" src="{{ relative }}assets/img/avatar-fat.jpg">
     <div class="media-body">
       <div class="media-body-text">
        Cras justo odio, dapibus ac facilisis in, egestas eget quam. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.

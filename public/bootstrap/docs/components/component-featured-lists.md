@@ -4,10 +4,10 @@ Featured lists are common marketing components used for associating visual icons
 
 {% example html %}
 <div class="container-fluid">
-  <div class="row">
+  <div class="row my-4">
     <div class="col-sm-6">
       <ul class="featured-list featured-list-bordered">
-        <li class="m-b-md">
+        <li class="mb-5">
           <div class="featured-list-icon">
             <span class="icon icon-dropbox"></span>
           </div>
@@ -31,7 +31,7 @@ Featured lists are common marketing components used for associating visual icons
     </div>
     <div class="col-sm-6">
       <ul class="featured-list featured-list-bordered">
-        <li class="m-b-md">
+        <li class="mb-5">
           <div class="featured-list-icon">
             <span class="icon icon-medium"></span>
           </div>

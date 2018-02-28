@@ -364,8 +364,8 @@ Below are all the original and social icons from Entypo that you can choose from
   <span class="icon icon-google-drive"></span>
   <span class="icon icon-google-hangouts"></span>
   <span class="icon icon-google-play"></span>
-  <span class="icon icon-google+"></span>
-  <span class="icon icon-google+-with-circle"></span>
+  <span class="icon icon-google-plus"></span>
+  <span class="icon icon-google-plus-with-circle"></span>
   <span class="icon icon-grooveshark"></span>
   <span class="icon icon-houzz"></span>
   <span class="icon icon-icloud"></span>
@@ -430,7 +430,7 @@ Below are all the original and social icons from Entypo that you can choose from
 Entypo icons can be placed in just about any other element, so long as they are a separate HTML element (e.g., a `<span>`). See the examples below for how to put them to use.
 
 {% example html %}
-<button class="btn btn-default-outline" type="button">
+<button class="btn btn-secondary" type="button">
   <span class="icon icon-thumbs-up"></span>
   Like
 </button>
@@ -442,20 +442,20 @@ Entypo icons can be placed in just about any other element, so long as they are 
 
 {% example html %}
 <ul class="nav nav-pills">
-  <li class="active">
-    <a href="#">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">
       <span class="icon icon-chat"></span>
       Discussions
     </a>
   </li>
-  <li>
-    <a href="#">
+  <li class="nav-item">
+    <a class="nav-link" href="#">
       <span class="icon icon-bell"></span>
       Notifications
     </a>
   </li>
-  <li>
-    <a href="#">
+  <li class="nav-item">
+    <a class="nav-link" href="#">
       <span class="icon icon-users"></span>
       Members
     </a>

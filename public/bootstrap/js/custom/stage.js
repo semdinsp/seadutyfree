@@ -1,21 +1,31 @@
-+function ($) {
-  'use strict';
+import $ from 'jquery'
+import Util from './util'
 
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v4.0.0): stage.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * --------------------------------------------------------------------------
+ */
 
-  // STAGE CLASS DEFINITION
-  // ======================
+const Stage = (($) => {
 
-  var dataApi = '[data-toggle="stage"]'
-  var Stage = function (element, options) {
-    this.element = element
-    this.options = options
-  }
+  /**
+   * ------------------------------------------------------------------------
+   * Constants
+   * ------------------------------------------------------------------------
+   */
 
-  Stage.VERSION = '3.3.5'
+  const NAME                = 'stage'
+  const DATA_KEY            = 'bs.stage'
+  const VERSION             = 'v4.0.0'
+  const DATA_API            = '[data-toggle="stage"]'
+  const EVENT_KEY           = `.${DATA_KEY}`
+  const DATA_API_KEY        = '.data-api'
+  const JQUERY_NO_CONFLICT  = $.fn[NAME]
+  const TRANSITION_DURATION = 150
 
-  Stage.TRANSITION_DURATION = 150
-
-  Stage.DEFAULTS = {
+  const Default = {
     easing         : 'cubic-bezier(.2,.7,.5,1)',
     duration       : 300,
     delay          : 0,
@@ -23,172 +33,214 @@
     hiddenElements : '#sidebar'
   }
 
-  Stage.prototype.isOpen = function () {
-    return $(this.element).hasClass('stage-open')
+  const Event = {
+    TOUCHMOVE      : `touchmove${EVENT_KEY}`,
+    KEYDOWN        : `keydown${EVENT_KEY}`,
+    OPEN           : `open${EVENT_KEY}`,
+    OPENED         : `opened${EVENT_KEY}`,
+    CLOSE          : `close${EVENT_KEY}`,
+    CLOSED         : `closed${EVENT_KEY}`,
+    CLICK          : `click${EVENT_KEY}`,
+    CLICK_DATA_API : `click${EVENT_KEY}${DATA_API_KEY}`
   }
 
-  Stage.prototype.toggle = function () {
-    if (this.isOpen()) {
-      this.close()
-    } else {
-      this.open()
-    }
-  }
-
-  Stage.prototype.open = function () {
-    var that = this
-
-    $(document.body).css('overflow', 'hidden')
-
-    if ('ontouchstart' in document.documentElement) {
-      $(document).on('touchmove.bs.stage', function (e) {
-        e.preventDefault()
-      })
-    }
-
-    $(this.options.hiddenElements).removeClass('hidden')
-
-    $(window).one('keydown.bs.stage', $.proxy(function (e) {
-      e.which == 27 && this.close()
-    }, this))
-
-    $(this.element)
-      .on('click.bs.stage', $.proxy(this.close, this))
-      .trigger('open.bs.stage')
-      .addClass('stage-open')
-
-    if (!$.support.transition) {
-      $(that.element)
-        .css({
-          'left': this.options.distance + 'px',
-          'position': 'relative'
-        })
-        .trigger('opened.bs.stage')
-      return
-    }
-
-    $(this.element)
-      .css({
-        '-webkit-transition': '-webkit-transform ' + this.options.duration + 'ms ' + this.options.easing,
-            '-ms-transition': '-ms-transform ' + this.options.duration + 'ms ' + this.options.easing,
-                'transition': 'transform ' + this.options.duration + 'ms ' + this.options.easing
-      })
-
-    this.element.offsetWidth // force reflow
-
-    $(this.element)
-      .css({
-        '-webkit-transform': 'translateX(' + this.options.distance + 'px)',
-            '-ms-transform': 'translateX(' + this.options.distance + 'px)',
-                'transform': 'translateX(' + this.options.distance + 'px)'
-      })
-      .one('bsTransitionEnd', function () {
-        $(that.element).trigger('opened.bs.stage')
-      })
-      .emulateTransitionEnd(this.options.duration)
-  }
-
-  Stage.prototype.close = function () {
-    $(window).off('keydown.bs.stage')
-
-    var that = this
-
-    function complete () {
-      $(document.body).css('overflow', 'auto')
-
-      if ('ontouchstart' in document.documentElement) {
-        $(document).off('touchmove.bs.stage')
-      }
-
-      $(that.options.hiddenElements).addClass('hidden')
-
-      $(that.element)
-        .removeClass('stage-open')
-        .css({
-          '-webkit-transition': '',
-              '-ms-transition': '',
-                  'transition': ''
-        })
-        .css({
-          '-webkit-transform': '',
-              '-ms-transform': '',
-                  'transform': ''
-        })
-        .trigger('closed.bs.stage')
-    }
-
-    if (!$.support.transition) {
-
-      $(this.element)
-        .trigger('close.bs.stage')
-        .css({
-          'left': '',
-          'position': ''
-        })
-        .off('click.bs.stage')
-
-      return complete()
-    }
-
-    $(this.element)
-      .trigger('close.bs.stage')
-      .off('click.bs.stage')
-      .css({
-        '-webkit-transform': 'none',
-            '-ms-transform': 'none',
-                'transform': 'none'
-      })
-      .one('bsTransitionEnd', complete)
-      .emulateTransitionEnd(this.options.duration)
+  const ClassName = {
+    STAGE_OPEN : 'stage-open',
+    HIDDEN     : 'hidden'
   }
 
 
-  // STAGE PLUGIN DEFINITION
-  // =======================
+  /**
+   * ------------------------------------------------------------------------
+   * Class Definition
+   * ------------------------------------------------------------------------
+   */
 
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.stage')
-      var options = $.extend(
-        {},
-        Stage.DEFAULTS,
-        $this.data(),
-        typeof option == 'object' && option
-      )
+   class Stage {
 
-      if (!data) $this.data('bs.stage', (data = new Stage(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
+     constructor(element, config) {
+       if (!Util.supportsTransitionEnd()) return
+
+       this._element  = element
+       this._config   = config
+     }
+
+     // getters
+
+     static get VERSION() {
+       return VERSION
+     }
+
+     static get Default() {
+       return Default
+     }
+
+     // private
+
+     _isOpen() {
+       return $(this._element).hasClass(ClassName.STAGE_OPEN)
+     }
+
+     _complete() {
+       $(document.body).css('overflow', 'auto')
+
+       if ('ontouchstart' in document.documentElement) {
+         $(document).off(Event.TOUCHMOVE)
+       }
+
+       $(this._config.hiddenElements).addClass(ClassName.HIDDEN)
+
+       $(this._element)
+         .removeClass(ClassName.STAGE_OPEN)
+         .css({
+           '-webkit-transition': '',
+               '-ms-transition': '',
+                   'transition': ''
+         })
+         .css({
+           '-webkit-transform': '',
+               '-ms-transform': '',
+                   'transform': ''
+         })
+         .trigger(Event.CLOSED)
+     }
+
+     // public
+
+     toggle() {
+       if (this._isOpen()) {
+         this.close()
+       } else {
+         this.open()
+       }
+     }
+
+     open() {
+       $(document.body).css('overflow', 'hidden')
+
+       if ('ontouchstart' in document.documentElement) {
+         $(document).on(Event.TOUCHMOVE, function (e) {
+           e.preventDefault()
+         })
+       }
+
+       $(this._config.hiddenElements).removeClass(ClassName.HIDDEN)
+
+       $(window).one(Event.KEYDOWN, $.proxy(function (e) {
+         e.which == 27 && this.close()
+       }, this))
+
+       $(this._element)
+         .on(Event.CLICK, $.proxy(this.close, this))
+         .trigger(Event.OPEN)
+         .addClass(ClassName.STAGE_OPEN)
+
+       if (!Util.supportsTransitionEnd()) {
+         $(this._element)
+           .css({
+             'left': this._config.distance + 'px',
+             'position': 'relative'
+           })
+           .trigger(Event.OPENED)
+         return
+       }
+
+       $(this._element)
+         .css({
+           '-webkit-transition': '-webkit-transform ' + this._config.duration + 'ms ' + this._config.easing,
+               '-ms-transition': '-ms-transform ' + this._config.duration + 'ms ' + this._config.easing,
+                   'transition': 'transform ' + this._config.duration + 'ms ' + this._config.easing
+         })
+
+       this._element.offsetWidth // force reflow
+
+       $(this._element)
+         .css({
+           '-webkit-transform': 'translateX(' + this._config.distance + 'px)',
+               '-ms-transform': 'translateX(' + this._config.distance + 'px)',
+                   'transform': 'translateX(' + this._config.distance + 'px)'
+         })
+         .one(Util.TRANSITION_END, () => {
+           $(this._element).trigger(Event.OPENED)
+         })
+         .emulateTransitionEnd(this._config.duration)
+     }
+
+     close() {
+       $(window).off(Event.KEYDOWN)
+
+       if (!Util.supportsTransitionEnd()) {
+         $(this._element)
+           .trigger(Event.CLOSE)
+           .css({ 'left': '', 'position': '' })
+           .off(Event.CLICK)
+
+         return this._complete()
+       }
+
+       $(this._element)
+         .trigger(Event.CLOSE)
+         .off(Event.CLICK)
+         .css({
+           '-webkit-transform': 'none',
+               '-ms-transform': 'none',
+                   'transform': 'none'
+         })
+         .one(Util.TRANSITION_END, $.proxy(this._complete, this))
+         .emulateTransitionEnd(this._config.duration)
+     }
+
+     // static
+
+     static _jQueryInterface(config) {
+       return this.each(function () {
+         var $this   = $(this)
+         var data    = $this.data(DATA_KEY)
+         var _config = $.extend(
+           {},
+           Default,
+           $this.data(),
+           typeof config === 'object' && config
+         )
+
+         if (!data) $this.data(DATA_KEY, (data = new Stage(this, _config)))
+         if (typeof config === 'string') data[config]()
+       })
+     }
   }
 
-  var old = $.fn.stage
+  /**
+   * ------------------------------------------------------------------------
+   * jQuery
+   * ------------------------------------------------------------------------
+   */
 
-  $.fn.stage             = Plugin
-  $.fn.stage.Constructor = Stage
-
-
-  // STAGE NO CONFLICT
-  // =================
-
-  $.fn.stage.noConflict = function () {
-    $.fn.stage = old
-    return this
+  $.fn[NAME]             = Stage._jQueryInterface
+  $.fn[NAME].Constructor = Stage
+  $.fn[NAME].noConflict  = function () {
+    $.fn[NAME] = JQUERY_NO_CONFLICT
+    return Stage._jQueryInterface
   }
 
+  /**
+   * ------------------------------------------------------------------------
+   * Data Api implementation
+   * ------------------------------------------------------------------------
+   */
 
-  // STAGE DATA-API
-  // ==============
-
-  $(document).on('click', dataApi, function () {
-    var options = $(this).data()
+  $(document).on(Event.CLICK_DATA_API, DATA_API, function () {
+    var config  = $(this).data()
     var $target = $(this.getAttribute('data-target'))
 
-    if (!$target.data('bs.stage')) {
-      $target.stage(options)
+    if (!$target.data(DATA_KEY)) {
+     $target.stage(config)
     }
 
     $target.stage('toggle')
   })
 
-}(jQuery);
+  return Stage
+
+})(jQuery)
+
+export default Stage
