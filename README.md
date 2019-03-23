@@ -5,5 +5,5 @@ They use nesta cms as a basic platform and haml for markdown.
 There is some interesting haml code if you take a look through the pages to manage menus etc.  In particular this nestacms site is internationalized using locales and supports translations using the iI8n gem. Review the code in app.rb where I evaluate the page headings if they include a translation and I set the language into the session.
 
 # minor changes
-teds-timor test
+teds-timor test erhoru stack 18
 # seadutyfree
