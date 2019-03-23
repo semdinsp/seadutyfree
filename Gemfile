@@ -15,7 +15,7 @@ gem 'i18n'
 gem 'nesta' #, '0.9.13'
 gem 'rack-test'
 gem 'bcrypt'
-
+gem 'test-unit'
 
 
 
