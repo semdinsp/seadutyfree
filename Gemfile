@@ -8,6 +8,7 @@ end
 ruby "2.4.0"
 gem 'foreman'
 gem 'sinatra'
+gem 'rack-ssl'
 gem 'puma'
 gem 'i18n'
 # update to rvm gem 'sinatra', '1.3.6'
